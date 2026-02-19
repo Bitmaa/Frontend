@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://vibra-p1sk.onrender.com", // backend URL
+  baseURL: "https://vibra-p1sk.onrender.com",
   withCredentials: true,
 });
 
