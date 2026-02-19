@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://assessments-smith-surprise-tribute.trycloudflare.com/api",
+  baseURL: "https://vibra-kzox.onrender.com/api", // ✅ Correct deployed backend
   withCredentials: true,
 });
 

@@ -1,1 +1,1 @@
-export const API_URL = "http://127.0.0.1:9000";
+https://backend-production-dd02.up.railway.app

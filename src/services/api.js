@@ -1,8 +1,9 @@
 import axios from "axios";
 
-// Make sure this matches your backend port
+// Deployed backend URL
 const api = axios.create({
-  baseURL: "http://localhost:9000/api",
+  baseURL: "https://vibra-kzox.onrender.com/api",  // note the /api
+  withCredentials: true, // keep if your backend uses cookies/sessions
 });
 
 export default api;
