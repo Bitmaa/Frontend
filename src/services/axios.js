@@ -1,7 +1,8 @@
+// src/services/axios.js (or wherever your API is configured)
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://vibra-kzox.onrender.com/api", // ✅ Correct deployed backend
+  baseURL: "https://vibra-p1sk.onrender.com", // <-- your live backend
   withCredentials: true,
 });
 

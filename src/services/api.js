@@ -1,9 +1,19 @@
 import axios from "axios";
 
-// Deployed backend URL
-const api = axios.create({
-  baseURL: "https://vibra-kzox.onrender.com/api",  // note the /api
-  withCredentials: true, // keep if your backend uses cookies/sessions
+const API = axios.create({
+  baseURL: "https://vibra-p1sk.onrender.com", // live backend
+  withCredentials: true,
 });
 
-export default api;
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export default API;

@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../services/axios";
+import { AuthContext } from "../context/AuthContext";
 
 function Register() {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     name: "",
@@ -24,8 +26,11 @@ function Register() {
     setLoading(true);
 
     try {
-      await API.post("/auth/register", form);
-      navigate("/login");
+      const res = await API.post("/auth/register", form);
+
+      login(res.data.user, res.data.token);
+
+      navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     } finally {
@@ -72,7 +77,7 @@ function Register() {
         </button>
       </form>
 
-      <p style={{ textAlign: "center", marginTop: 15 }}>
+      <p>
         Already have an account? <Link to="/login">Login</Link>
       </p>
     </div>
