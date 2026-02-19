@@ -1,50 +1,55 @@
-import React, { useState } from "react";
-import API from "../services/axios";
+import React, { useState, useContext } from "react";
+import API from "../services/api"; // ← updated
+import { AuthContext } from "../context/AuthContext";
 
 function Upload() {
+  const { user } = useContext(AuthContext);
   const [file, setFile] = useState(null);
-  const [caption, setCaption] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  // Get token from localStorage
-  const token = localStorage.getItem("token");
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    if (!file) return;
+
+    if (!file) return setError("Please select a file.");
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("caption", caption);
 
     try {
+      setLoading(true);
+      setError("");
+
       const res = await API.post("/media", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`, // ✅ send token
         },
       });
 
-      alert("Upload successful!");
+      console.log("Upload successful:", res.data);
       setFile(null);
-      setCaption("");
+      alert("Upload successful!");
     } catch (err) {
-      console.error("Upload error:", err);
-      alert("Upload failed. Make sure you are logged in.");
+      console.error(err.response?.data || err.message);
+      setError(err.response?.data?.message || "Upload failed.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="upload-form">
+    <div>
       <h2>Upload Media</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleUpload}>
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-        <input
-          type="text"
-          placeholder="Caption..."
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-        />
-        <button type="submit">Upload</button>
+        <input type="file" onChange={handleFileChange} />
+        <button type="submit" disabled={loading}>
+          {loading ? "Uploading..." : "Upload"}
+        </button>
       </form>
     </div>
   );
